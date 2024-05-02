@@ -2,9 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/charmofundying/blob/1.20.2/CHANGELOG.md).
 
-## [7.1.1+1.20.4] - 2024.03.20
-### Changed
-- Updated to SpectreLib 0.15.2
-- Optimized networking code
-### Fixed
-- [NeoForge] Fixed networking errors when joining LAN or dedicated servers
+## [7.1.2+1.20.4] - 2024.05.02
+### Added
+- Added `zOffset` configuration option for totem rendering [#38](https://github.com/illusivesoulworks/charmofundying/issues/38)
