@@ -21,6 +21,7 @@ public class CharmOfUndyingConfig {
 
     public final SpectreConfigSpec.DoubleValue yOffset;
     public final SpectreConfigSpec.DoubleValue xOffset;
+    public final SpectreConfigSpec.DoubleValue zOffset;
     public final SpectreConfigSpec.BooleanValue renderTotem;
 
     public Server(SpectreConfigSpec.Builder builder) {
@@ -31,6 +32,10 @@ public class CharmOfUndyingConfig {
       xOffset = builder.comment("The horizontal offset for rendering the totem on the player.")
           .translation(CONFIG_PREFIX + "xOffset")
           .defineInRange("xOffset", 0.0D, -100.0D, 100.0D);
+
+      zOffset = builder.comment("The z-axis offset for rendering the totem on the player.")
+          .translation(CONFIG_PREFIX + "zOffset")
+          .defineInRange("zOffset", 0.0D, -100.0D, 100.0D);
 
       renderTotem = builder.comment("If enabled, renders the equipped totem on players.")
           .translation(CONFIG_PREFIX + "renderTotem")
