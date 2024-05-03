@@ -18,30 +18,33 @@
 
 package com.illusivesoulworks.charmofundying.common.network;
 
+import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
 import com.illusivesoulworks.charmofundying.client.ClientPacketHandler;
+import javax.annotation.Nonnull;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-public class SPacketUseTotem {
+public record SPacketUseTotem(int entityId) implements CustomPacketPayload {
 
-  private final int entityId;
-
-  public SPacketUseTotem(int entityId) {
-    this.entityId = entityId;
-  }
-
-  public int entityId() {
-    return this.entityId;
-  }
-
-  public static void encode(SPacketUseTotem packet, FriendlyByteBuf buffer) {
-    buffer.writeInt(packet.entityId());
-  }
-
-  public static SPacketUseTotem decode(FriendlyByteBuf buffer) {
-    return new SPacketUseTotem(buffer.readInt());
-  }
+  public static final Type<SPacketUseTotem> TYPE =
+      new Type<>(new ResourceLocation(CharmOfUndyingConstants.MOD_ID, "use_totem"));
+  public static final StreamCodec<FriendlyByteBuf, SPacketUseTotem> STREAM_CODEC =
+      StreamCodec.composite(
+          ByteBufCodecs.INT,
+          SPacketUseTotem::entityId,
+          SPacketUseTotem::new);
 
   public static void handle(SPacketUseTotem msg) {
     ClientPacketHandler.handle(msg);
+  }
+
+  @Nonnull
+  @Override
+  public Type<? extends CustomPacketPayload> type() {
+    return TYPE;
   }
 }

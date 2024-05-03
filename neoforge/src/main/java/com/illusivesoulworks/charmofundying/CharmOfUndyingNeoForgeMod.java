@@ -21,7 +21,7 @@ package com.illusivesoulworks.charmofundying;
 import com.illusivesoulworks.charmofundying.client.CurioTotemRenderer;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.common.network.CharmOfUndyingClientPayloadHandler;
-import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotemPayload;
+import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import java.util.HashSet;
 import java.util.Set;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,7 +34,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -68,11 +68,10 @@ public class CharmOfUndyingNeoForgeMod {
     }
   }
 
-  private void registerPayloadHandler(final RegisterPayloadHandlerEvent evt) {
+  private void registerPayloadHandler(final RegisterPayloadHandlersEvent evt) {
     evt.registrar(CharmOfUndyingConstants.MOD_ID)
-        .play(SPacketUseTotemPayload.ID, SPacketUseTotemPayload::new,
-            handler -> handler.client(
-                CharmOfUndyingClientPayloadHandler.getInstance()::handleUseTotem));
+        .playToClient(SPacketUseTotem.TYPE, SPacketUseTotem.STREAM_CODEC,
+            CharmOfUndyingClientPayloadHandler.getInstance()::handleUseTotem);
   }
 
   private void registerCapabilities(final RegisterCapabilitiesEvent evt) {

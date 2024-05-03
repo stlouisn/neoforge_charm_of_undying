@@ -43,8 +43,9 @@ public class CharmOfUndyingForgeNetwork {
         .serverAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION)).simpleChannel();
 
     instance.messageBuilder(SPacketUseTotem.class)
-        .encoder(SPacketUseTotem::encode)
-        .decoder(SPacketUseTotem::decode)
+        .encoder((payload, friendlyByteBuf) -> SPacketUseTotem.STREAM_CODEC.encode(friendlyByteBuf,
+            payload))
+        .decoder(SPacketUseTotem.STREAM_CODEC::decode)
         .consumerNetworkThread((message, context) -> {
           context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
               () -> () -> SPacketUseTotem.handle(message)));

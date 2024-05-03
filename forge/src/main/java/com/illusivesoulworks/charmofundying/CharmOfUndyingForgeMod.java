@@ -23,18 +23,11 @@ import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.common.network.CharmOfUndyingForgeNetwork;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -42,10 +35,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
-import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 @Mod(CharmOfUndyingConstants.MOD_ID)
 public class CharmOfUndyingForgeMod {
@@ -56,11 +49,11 @@ public class CharmOfUndyingForgeMod {
     final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
+    eventBus.addListener(this::attachCapabilities);
   }
 
   private void setup(final FMLCommonSetupEvent evt) {
     CharmOfUndyingForgeNetwork.setup();
-    MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, this::attachCapabilities);
   }
 
   private void clientSetup(final FMLClientSetupEvent evt) {
@@ -80,32 +73,20 @@ public class CharmOfUndyingForgeMod {
     }
   }
 
-  private void attachCapabilities(AttachCapabilitiesEvent<ItemStack> evt) {
-
-    if (!TotemProviders.IS_TOTEM.test(evt.getObject().getItem())) {
-      return;
-    }
-    ICurio curio = new ICurio() {
-      @Override
-      public ItemStack getStack() {
-        return evt.getObject();
-      }
+  private void attachCapabilities(RegisterCapabilitiesEvent evt) {
+    ICurioItem curio = new ICurioItem() {
 
       @Override
-      public boolean canEquipFromUse(SlotContext ctx) {
+      public boolean canEquipFromUse(SlotContext ctx, ItemStack stack) {
         return true;
       }
     };
-    ICapabilityProvider provider = new ICapabilityProvider() {
-      private final LazyOptional<ICurio> curioOpt = LazyOptional.of(() -> curio);
 
-      @Nonnull
-      @Override
-      public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
-                                               @Nullable Direction side) {
-        return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
+    for (Item item : ForgeRegistries.ITEMS.getValues()) {
+
+      if (TotemProviders.IS_TOTEM.test(item)) {
+        CuriosApi.registerCurio(item, curio);
       }
-    };
-    evt.addCapability(CuriosCapability.ID_ITEM, provider);
+    }
   }
 }

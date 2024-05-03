@@ -19,7 +19,7 @@
 package com.illusivesoulworks.charmofundying.platform;
 
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
-import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotemPayload;
+import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -53,7 +53,7 @@ public class NeoForgePlatform implements IPlatform {
 
   @Override
   public void broadcastTotemEvent(LivingEntity livingEntity) {
-    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntity)
-        .send(new SPacketUseTotemPayload(livingEntity.getId()));
+    PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity,
+        new SPacketUseTotem(livingEntity.getId()));
   }
 }

@@ -1,7 +1,7 @@
 package com.illusivesoulworks.charmofundying.common.network;
 
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class CharmOfUndyingClientPayloadHandler {
 
@@ -12,12 +12,11 @@ public class CharmOfUndyingClientPayloadHandler {
     return INSTANCE;
   }
 
-  public void handleUseTotem(SPacketUseTotemPayload msg, PlayPayloadContext ctx) {
-    ctx.workHandler().submitAsync(() -> SPacketUseTotem.handle(msg))
+  public void handleUseTotem(SPacketUseTotem msg, IPayloadContext ctx) {
+    ctx.enqueueWork(() -> SPacketUseTotem.handle(msg))
         .exceptionally(e -> {
-          ctx.packetHandler()
-              .disconnect(
-                  Component.translatable("charmofundying.networking.failed", e.getMessage()));
+          ctx.disconnect(
+              Component.translatable("charmofundying.networking.failed", e.getMessage()));
           return null;
         });
   }
