@@ -18,20 +18,16 @@
 
 package com.illusivesoulworks.charmofundying.platform;
 
-import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import java.util.List;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,7 +41,7 @@ public class FabricPlatform implements IPlatform {
     return TrinketsApi.getTrinketComponent(livingEntity).map(component -> {
       List<Tuple<SlotReference, ItemStack>> res =
           component.getEquipped(stack -> TotemProviders.IS_TOTEM.test(stack.getItem()));
-      return res.size() > 0 ? res.get(0).getB() : ItemStack.EMPTY;
+      return !res.isEmpty() ? res.getFirst().getB() : ItemStack.EMPTY;
     }).orElse(ItemStack.EMPTY);
   }
 
@@ -60,16 +56,15 @@ public class FabricPlatform implements IPlatform {
   }
 
   @Override
-  public void broadcastTotemEvent(LivingEntity livingEntity) {
-    FriendlyByteBuf buf = PacketByteBufs.create();
-    SPacketUseTotem.encode(new SPacketUseTotem(livingEntity.getId()), buf);
+  public void broadcastTotemEvent(LivingEntity livingEntity, ItemStack stack) {
+    SPacketUseTotem packet = new SPacketUseTotem(livingEntity.getId(), stack);
 
     for (ServerPlayer serverPlayer : PlayerLookup.tracking(livingEntity)) {
-      ServerPlayNetworking.send(serverPlayer, CharmOfUndyingConstants.TOTEM_EVENT, buf);
+      ServerPlayNetworking.send(serverPlayer, packet);
     }
 
     if (livingEntity instanceof ServerPlayer serverPlayer) {
-      ServerPlayNetworking.send(serverPlayer, CharmOfUndyingConstants.TOTEM_EVENT, buf);
+      ServerPlayNetworking.send(serverPlayer, packet);
     }
   }
 }

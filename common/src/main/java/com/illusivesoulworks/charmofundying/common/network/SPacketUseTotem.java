@@ -21,21 +21,23 @@ package com.illusivesoulworks.charmofundying.common.network;
 import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
 import com.illusivesoulworks.charmofundying.client.ClientPacketHandler;
 import javax.annotation.Nonnull;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
-public record SPacketUseTotem(int entityId) implements CustomPacketPayload {
+public record SPacketUseTotem(int entityId, ItemStack stack) implements CustomPacketPayload {
 
   public static final Type<SPacketUseTotem> TYPE =
       new Type<>(new ResourceLocation(CharmOfUndyingConstants.MOD_ID, "use_totem"));
-  public static final StreamCodec<FriendlyByteBuf, SPacketUseTotem> STREAM_CODEC =
+  public static final StreamCodec<RegistryFriendlyByteBuf, SPacketUseTotem> STREAM_CODEC =
       StreamCodec.composite(
           ByteBufCodecs.INT,
           SPacketUseTotem::entityId,
+          ItemStack.STREAM_CODEC,
+          SPacketUseTotem::stack,
           SPacketUseTotem::new);
 
   public static void handle(SPacketUseTotem msg) {

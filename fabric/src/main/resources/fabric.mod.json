@@ -21,7 +21,7 @@
     "client": [
       "com.illusivesoulworks.charmofundying.client.CharmOfUndyingFabricClientMod"
     ],
-    "spectrelib": [
+    "spectrelib-config": [
       "com.illusivesoulworks.charmofundying.CharmOfUndyingConfigInitializer"
     ]
   },
@@ -33,6 +33,6 @@
     "fabric": "*",
     "trinkets": "*",
     "minecraft": "${minecraft_version_range_alt}",
-    "java": ">=17"
+    "java": ">=${java_version}"
   }
 }

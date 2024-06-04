@@ -30,5 +30,5 @@ public interface IPlatform {
 
   boolean isModLoaded(String name);
 
-  void broadcastTotemEvent(LivingEntity livingEntity);
+  void broadcastTotemEvent(LivingEntity livingEntity, ItemStack stack);
 }

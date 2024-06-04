@@ -20,12 +20,9 @@ package com.illusivesoulworks.charmofundying.common.integration;
 
 import com.illusivesoulworks.charmofundying.common.ITotemEffectProvider;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
-import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,7 +37,6 @@ import wraith.fwaystones.block.WaystoneBlockEntity;
 import wraith.fwaystones.item.VoidTotem;
 import wraith.fwaystones.util.TeleportSources;
 import wraith.fwaystones.util.Utils;
-import wraith.fwaystones.util.WaystonePacketHandler;
 
 public class FWaystonesVoidTotemEffectProvider implements ITotemEffectProvider {
 
@@ -53,6 +49,7 @@ public class FWaystonesVoidTotemEffectProvider implements ITotemEffectProvider {
   public boolean bypassInvul() {
     return true;
   }
+
   @Override
   public boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource,
                               ItemStack stack) {
@@ -68,12 +65,14 @@ public class FWaystonesVoidTotemEffectProvider implements ITotemEffectProvider {
     boolean teleported = false;
 
     if (livingEntity instanceof ServerPlayer serverPlayer) {
-      FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
-      ServerPlayNetworking.send(serverPlayer, WaystonePacketHandler.VOID_REVIVE, packet);
+//      todo: Re-implement when Fabric Waystones updates
+//      FriendlyByteBuf packet = new FriendlyByteBuf(Unpooled.buffer());
+//      ServerPlayNetworking.send(serverPlayer, WaystonePacketHandler.VOID_REVIVE, packet);
       String hash = VoidTotem.getBoundWaystone(stack);
 
       if (hash == null) {
-        Set<String> discovered = ((PlayerEntityMixinAccess) player).getDiscoveredWaystones();
+        Set<String> discovered =
+            ((PlayerEntityMixinAccess) player).fabricWaystones$getDiscoveredWaystones();
 
         if (!discovered.isEmpty()) {
           List<String> list = new ArrayList<>(discovered);

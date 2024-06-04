@@ -19,6 +19,7 @@
 package com.illusivesoulworks.charmofundying.common.network;
 
 import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -43,9 +44,9 @@ public class CharmOfUndyingForgeNetwork {
         .serverAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION)).simpleChannel();
 
     instance.messageBuilder(SPacketUseTotem.class)
-        .encoder((payload, friendlyByteBuf) -> SPacketUseTotem.STREAM_CODEC.encode(friendlyByteBuf,
-            payload))
-        .decoder(SPacketUseTotem.STREAM_CODEC::decode)
+        .encoder((payload, friendlyByteBuf) -> SPacketUseTotem.STREAM_CODEC.encode(
+            (RegistryFriendlyByteBuf) friendlyByteBuf, payload))
+        .decoder(buf -> SPacketUseTotem.STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf))
         .consumerNetworkThread((message, context) -> {
           context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
               () -> () -> SPacketUseTotem.handle(message)));

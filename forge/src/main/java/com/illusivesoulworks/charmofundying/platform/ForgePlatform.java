@@ -57,8 +57,8 @@ public class ForgePlatform implements IPlatform {
   }
 
   @Override
-  public void broadcastTotemEvent(LivingEntity livingEntity) {
-    CharmOfUndyingForgeNetwork.get().send(new SPacketUseTotem(livingEntity.getId()),
+  public void broadcastTotemEvent(LivingEntity livingEntity, ItemStack stack) {
+    CharmOfUndyingForgeNetwork.get().send(new SPacketUseTotem(livingEntity.getId(), stack),
         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntity));
   }
 }

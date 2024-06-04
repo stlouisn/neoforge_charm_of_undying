@@ -19,7 +19,6 @@
 package com.illusivesoulworks.charmofundying.client;
 
 import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
-import com.illusivesoulworks.charmofundying.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,7 +40,7 @@ public class ClientPacketHandler {
             SoundEvents.TOTEM_USE, entity.getSoundSource(), 1.0F, 1.0F, false);
 
         if (entity == mc.player) {
-          mc.gameRenderer.displayItemActivation(Services.PLATFORM.findTotem(mc.player));
+          mc.gameRenderer.displayItemActivation(msg.stack());
         }
       }
     }

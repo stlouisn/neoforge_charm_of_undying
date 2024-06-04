@@ -52,8 +52,8 @@ public class NeoForgePlatform implements IPlatform {
   }
 
   @Override
-  public void broadcastTotemEvent(LivingEntity livingEntity) {
+  public void broadcastTotemEvent(LivingEntity livingEntity, ItemStack stack) {
     PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity,
-        new SPacketUseTotem(livingEntity.getId()));
+        new SPacketUseTotem(livingEntity.getId(), stack));
   }
 }

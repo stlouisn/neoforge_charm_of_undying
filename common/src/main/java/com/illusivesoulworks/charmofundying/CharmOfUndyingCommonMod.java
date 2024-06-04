@@ -66,7 +66,7 @@ public class CharmOfUndyingCommonMod {
       }
 
       if (effectProvider.applyEffects(livingEntity, damageSource, copy)) {
-        Services.PLATFORM.broadcastTotemEvent(livingEntity);
+        Services.PLATFORM.broadcastTotemEvent(livingEntity, copy);
         return true;
       }
     }

@@ -21,11 +21,13 @@ package com.illusivesoulworks.charmofundying;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.common.VanillaTotemEffectProvider;
 import com.illusivesoulworks.charmofundying.common.integration.FWaystonesVoidTotemEffectProvider;
+import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import java.util.HashSet;
 import java.util.Set;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +40,7 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
   @Override
   public void onInitialize() {
     CharmOfUndyingCommonMod.init();
+    PayloadTypeRegistry.playS2C().register(SPacketUseTotem.TYPE , SPacketUseTotem.STREAM_CODEC);
 
     if (FabricLoader.getInstance().isModLoaded("fwaystones")) {
       FWaystonesVoidTotemEffectProvider.init();

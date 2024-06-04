@@ -15,7 +15,6 @@ java {
 
 repositories {
     mavenCentral()
-    mavenLocal()
     // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
     exclusiveContent {
         forRepository {
@@ -26,11 +25,29 @@ repositories {
         }
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
     maven {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
     maven { url = "https://maven.terraformersmc.com" }
+    maven {
+        name = 'Illusive Soulworks'
+        url = 'https://maven.theillusivec4.top'
+    }
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
 }
 
 dependencies {
@@ -111,27 +128,14 @@ processResources {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
+        register('mavenJava', MavenPublication) {
+            artifactId base.archivesName.get()
             from components.java
         }
     }
     repositories {
-
-        if (project.hasProperty('urlMaven')) {
-
-            if (project.hasProperty('userMaven') && project.hasProperty('passMaven')) {
-
-                maven {
-                    url urlMaven
-                    credentials {
-                        username userMaven
-                        password passMaven
-                    }
-                }
-            }
+        maven {
+            url System.getenv("local_maven_url")
         }
     }
 }

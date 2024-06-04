@@ -18,7 +18,6 @@
 
 package com.illusivesoulworks.charmofundying.client;
 
-import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
 import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -27,10 +26,7 @@ public class CharmOfUndyingFabricClientMod implements ClientModInitializer {
 
   @Override
   public void onInitializeClient() {
-    ClientPlayNetworking.registerGlobalReceiver(CharmOfUndyingConstants.TOTEM_EVENT,
-        (client, listener, buf, responseSender) -> {
-          SPacketUseTotem msg = SPacketUseTotem.decode(buf);
-          client.execute(() -> SPacketUseTotem.handle(msg));
-        });
+    ClientPlayNetworking.registerGlobalReceiver(SPacketUseTotem.TYPE,
+        (payload, context) -> context.client().execute(() -> SPacketUseTotem.handle(payload)));
   }
 }
