@@ -147,6 +147,8 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
             project.ext.curse_link = "${cf_page}/files/${mainFile.curseFileId}"
         }
     }
+
+    dependsOn('jarJar')
 }
 
 modrinth {
@@ -170,3 +172,5 @@ tasks.modrinth.doLast {
         project.ext.modrinth_link = "${modrinth_page}/version/${tasks.modrinth.newVersion.id}"
     }
 }
+
+tasks.modrinth.dependsOn('jarJar')
