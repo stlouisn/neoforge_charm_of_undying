@@ -71,7 +71,8 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     "${release_versions}".split(',').each {
         mainFile.addGameVersion("${it}")
     }
-    mainFile.addRequirement("curios")
+    mainFile.addModLoader("NeoForge")
+    mainFile.addRequirement("curios-continuation")
     mainFile.withAdditionalFile(sourcesJar)
 
     doLast {
@@ -92,8 +93,9 @@ modrinth {
     uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
     additionalFiles = [sourcesJar]
     gameVersions = "${release_versions}".split(",") as List<String>
+    loaders = ["neoforge"]
     dependencies {
-        required.project "curios"
+        required.project "curios-continuation"
     }
 }
 
