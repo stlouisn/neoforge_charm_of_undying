@@ -22,8 +22,7 @@ pluginManagement {
                 }
             }
             filter {
-                includeGroupAndSubgroups("net.neoforged")
-                includeGroup("codechicken")
+                includeGroupAndSubgroups('net.neoforged')
             }
         }
         exclusiveContent {
@@ -53,5 +52,5 @@ plugins {
 rootProject.name = "${mod_id}"
 include("common")
 include("fabric")
-include("forge")
+//include("forge")
 include("neoforge")

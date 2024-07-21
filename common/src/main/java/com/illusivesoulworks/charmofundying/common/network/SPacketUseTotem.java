@@ -30,8 +30,8 @@ import net.minecraft.world.item.ItemStack;
 
 public record SPacketUseTotem(int entityId, ItemStack stack) implements CustomPacketPayload {
 
-  public static final Type<SPacketUseTotem> TYPE =
-      new Type<>(new ResourceLocation(CharmOfUndyingConstants.MOD_ID, "use_totem"));
+  public static final Type<SPacketUseTotem> TYPE = new Type<>(
+      ResourceLocation.fromNamespaceAndPath(CharmOfUndyingConstants.MOD_ID, "use_totem"));
   public static final StreamCodec<RegistryFriendlyByteBuf, SPacketUseTotem> STREAM_CODEC =
       StreamCodec.composite(
           ByteBufCodecs.INT,
