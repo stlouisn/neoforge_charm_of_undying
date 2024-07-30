@@ -5,10 +5,3 @@ This is a copy of the changelog for the most recent version. For the full versio
 ## [9.0.1+1.21] - 2024.07.29
 ### Changed
 - [NeoForge] Updated to NeoForge 21.0.143
-
-## [9.0.0+1.21] - 2024.07.21
-### Added
-- Added `ko_kr` localization [#40](https://github.com/illusivesoulworks/charmofundying/pull/40)
-### Changed
-- Updated to Minecraft 1.21
-- Updated to SpectreLib 0.17.1
