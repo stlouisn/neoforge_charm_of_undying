@@ -1,5 +1,3 @@
-
-
 package dev.charmofundying.platform.services;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -11,8 +9,6 @@ public interface IPlatform {
   ItemStack findTotem(LivingEntity livingEntity);
 
   String getRegistryName(Item item);
-
-  boolean isModLoaded(String name);
 
   void broadcastTotemEvent(LivingEntity livingEntity, ItemStack stack);
 }

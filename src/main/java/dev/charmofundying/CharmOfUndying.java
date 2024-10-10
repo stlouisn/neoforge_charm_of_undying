@@ -16,10 +16,10 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 @Mod(CharmOfUndyingConstants.MOD_ID)
-public class CharmOfUndyingNeoForgeMod {
+public class CharmOfUndying {
 
-  public CharmOfUndyingNeoForgeMod(IEventBus eventBus) {
-    CharmOfUndyingCommonMod.init();
+  public CharmOfUndying(IEventBus eventBus) {
+    CharmOfUndyingCommon.init();
     eventBus.addListener(this::registerCapabilities);
     eventBus.addListener(this::clientSetup);
     eventBus.addListener(this::registerPayloadHandler);
