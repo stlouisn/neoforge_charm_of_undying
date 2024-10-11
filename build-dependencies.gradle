@@ -1,5 +1,5 @@
 / Adorned Curios API /
 def curios_api_file_id = "5740650" // https://www.curseforge.com/minecraft/mc-mods/adorned/files/all?gameVersionTypeId=6
 repositories { maven { url = "https://www.cursemaven.com" }}
-dependencies { compileOnly ( "curse.maven:adorned-1036809:${curios_api_file_id}" )}
+dependencies { modCompileOnly ( "curse.maven:adorned-1036809:${curios_api_file_id}" )}
 println ("\nAdorned Curios API: CurseForge-$curios_api_file_id")
